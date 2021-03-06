@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
-
 # Create your views here.
+from login.models import SiteUser
 
 
 def index(request):
@@ -10,7 +10,22 @@ def index(request):
 
 
 def login(request):
-    pass
+    if request.method == 'POST':
+        username = request.POST.get('username').strip()
+        password = request.POST.get('password').strip()
+        # print(username, password)
+        if username and password:
+            user = SiteUser.objects.filter(name=username,
+                                           password=password).first()
+            if user:
+                return redirect('/index/')
+            else:
+                message = "用户名或者密码错误"
+                return render(request, 'login/login.html',
+                              {'message': message})
+        else:
+            message = "非法的数据信息"
+            return render(request, 'login/login.html', {'message': message})
     return render(request, 'login/login.html')
 
 
