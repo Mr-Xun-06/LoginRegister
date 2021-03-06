@@ -19,11 +19,9 @@ class SiteUser(models.Model):
     modify_time = models.DateTimeField(auto_now=True, verbose_name="最后一次修改时间")
     last_login_time = models.DateTimeField(null=True, blank=True, verbose_name="最后一次登陆时间")
 
+    def __str__(self):
+        return self.name
 
-def __str__(self):
-    return self.name
-
-
-class Meta:
-    verbose_name = "网站用户管理"
-    verbose_name_plural = verbose_name
+    class Meta:
+        verbose_name = "网站用户管理"
+        verbose_name_plural = verbose_name
