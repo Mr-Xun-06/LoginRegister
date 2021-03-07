@@ -1,9 +1,10 @@
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from login.forms import LoginForm, RegisterForm
 from login.models import SiteUser
-from login.utils import hash_code
+from login.utils import hash_code, make_confirm_string, send_email
 
 
 def index(request):
@@ -50,10 +51,9 @@ def register(request):
             password2 = register_form.cleaned_data.get('password2')
             email = register_form.cleaned_data.get('email')
 
-            print(locals())
             # 接下来判断用户名和邮箱是否已经被注册
             same_name_user = SiteUser.objects.filter(name=username)
-            print(same_name_user)
+            # print(same_name_user)
             if same_name_user:
                 message = '用户名已经存在'
                 return render(request, 'login/register.html', locals())
@@ -61,10 +61,21 @@ def register(request):
             if same_email_user:
                 message = '该邮箱已经被注册了！'
                 return render(request, 'login/register.html', locals())
-            # 将注册的信息存储到数据库，跳转到登录界面
-            new_user = SiteUser(name=username, password=hash_code(password1), email=email)
-            new_user.save()
-            return redirect('/login/')
+            try:
+                # 将注册的信息存储到数据库，跳转到登录界面
+                new_user = SiteUser(name=username, password=hash_code(password1), email=email)
+                new_user.save()
+                # 生成确认码并发送确认邮件
+                code = make_confirm_string(new_user)
+                print('code:', code)
+                send_email(email, code)
+                message = '请前往邮箱进行确认！'
+            except Exception:
+                new_user.delete()
+                message = '发送邮件失败！'
+                return render(request, 'login/register.html', locals())
+            else:
+                return redirect('/login/')
     # 如果是GET请求，返回用户注册的html页面。
     register_form = RegisterForm()
     return render(request, 'login/register.html', locals())

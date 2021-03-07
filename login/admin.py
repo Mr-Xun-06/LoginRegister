@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from login.models import SiteUser
+from login.models import SiteUser, ConfirmString
 
 
 class SiteUseradmin(admin.ModelAdmin):
@@ -12,3 +12,4 @@ class SiteUseradmin(admin.ModelAdmin):
 
 
 admin.site.register(SiteUser, SiteUseradmin)
+admin.site.register(ConfirmString)
