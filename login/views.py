@@ -1,15 +1,19 @@
+from datetime import datetime, timedelta
+
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from login.forms import LoginForm, RegisterForm
-from login.models import SiteUser
+from login.models import SiteUser, ConfirmString
 from login.utils import hash_code, make_confirm_string, send_email
+from loginRegister import settings
 
 
 def index(request):
-    pass
-    return render(request, 'login/index.html')
+    if request.session.get('is_login'):
+        return render(request, 'login/index.html')
+    return redirect('/login/')
 
 
 def login(request):
@@ -20,6 +24,9 @@ def login(request):
             password = login_form.cleaned_data.get('password')
             user = SiteUser.objects.filter(name=username, password=hash_code(password)).first()
             if user:
+                if not user.has_confirmed:
+                    message = '该用户还未经过邮件确认！'
+                    return render(request, 'login/login.html', locals())
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['username'] = user.name
@@ -53,7 +60,7 @@ def register(request):
 
             # 接下来判断用户名和邮箱是否已经被注册
             same_name_user = SiteUser.objects.filter(name=username)
-            # print(same_name_user)
+            print(same_name_user)
             if same_name_user:
                 message = '用户名已经存在'
                 return render(request, 'login/register.html', locals())
@@ -86,3 +93,26 @@ def logout(request):
     if request.session.get('is_login'):
         request.session.flush()  # 清空session信息
     return redirect('/login/')
+
+
+def user_confirm(request):
+    code = request.GET.get('code', None)
+    message = ''
+    try:
+        confirm = ConfirmString.objects.get(code=code)
+    except:
+        message = '无效的确认请求!'
+        return render(request, 'login/confirm.html', locals())
+
+    create_time = confirm.create_time
+    now = datetime.now()
+    print(now, create_time, create_time + timedelta(settings.CONFIRM_DAYS))
+    if now > create_time + timedelta(settings.CONFIRM_DAYS):
+        confirm.user.delete()
+        message = '您的邮件已经过期！请重新注册!'
+    else:
+        confirm.user.has_confirmed = True
+        confirm.user.save()
+        confirm.delete()
+        message = '感谢确认，请使用账户登录！'
+    return render(request, 'login/confirm.html', locals())

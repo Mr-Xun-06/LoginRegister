@@ -15,16 +15,18 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'oijp3bxkli!d64!61a93385qd$_u=p_v_!k-izxnw!81z8igld'
+SECRET_KEY = '9+)9=p_v&f==2t*^^t@be0b*a%!l@l3=dj3va-=acth$(w$s2+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -70,6 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'loginRegister.wsgi.application'
 
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -79,6 +82,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -98,6 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -111,19 +116,23 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# USE_TZ = True
+USE_TZ = False
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
-# mail configure(添加信息如下)
+
+# mail configure
 EMAIL_HOST = 'smtp.163.com'  # 'smtp.qq.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'sunduouv_1@163.com'  # 你的邮箱地址
-EMAIL_HOST_PASSWORD = 'HOOSWWGITSBQAHZS'  # 不是邮箱的登录密码，而是授权码(如何获取授权码)
-EMAIL_USE_SSL = False  # 不开启ssl
+EMAIL_HOST_USER = 'sunduouv_1@163.com'
+EMAIL_HOST_PASSWORD = 'HOOSWWGITSBQAHZS'
+EMAIL_USE_SSL = False
 
-
+# 确认邮件失效的时间
 CONFIRM_DAYS = 3
