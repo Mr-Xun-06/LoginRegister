@@ -11,8 +11,8 @@
     <title>首页</title>
   </head>
   <body>
-    <h1>这是首页的模拟界面</h1>
-
+    <h1>你好, {{ request.session.username }}, 这是首页的模拟界面</h1>
+    <a href="/logout/"><strong style="font-size: 20px">登出</strong></a>
     <!-- JavaScript 文件是可选的。从以下两种建议中选择一个即可！ -->
 
     <!-- 选项 1：jQuery 和 Bootstrap 集成包（集成了 Popper） -->
