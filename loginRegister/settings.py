@@ -122,6 +122,6 @@ STATIC_URL = '/static/'
 # mail configure(添加信息如下)
 EMAIL_HOST = 'smtp.163.com'  # 'smtp.qq.com'
 EMAIL_PORT = 25
-EMAIL_HOST_USER = 'ahalf_summer@163.com'  # 你的邮箱地址
-EMAIL_HOST_PASSWORD = 'NFPOJZLTRPJPANZE'  # 不是邮箱的登录密码，而是授权码(如何获取授权码)
+EMAIL_HOST_USER = 'sunduouv_1@163.com'  # 你的邮箱地址
+EMAIL_HOST_PASSWORD = 'HOOSWWGITSBQAHZS'  # 不是邮箱的登录密码，而是授权码(如何获取授权码)
 EMAIL_USE_SSL = False  # 不开启ssl

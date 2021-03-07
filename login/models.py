@@ -19,9 +19,25 @@ class SiteUser(models.Model):
     modify_time = models.DateTimeField(auto_now=True, verbose_name="最后一次修改时间")
     last_login_time = models.DateTimeField(null=True, blank=True, verbose_name="最后一次登陆时间")
 
+    # has_confirmed = models.BooleanField(default=False, verbose_name="是否邮箱验证")
+
     def __str__(self):
         return self.name
 
     class Meta:
         verbose_name = "网站用户管理"
         verbose_name_plural = verbose_name
+
+
+# class ConfirmString(models.Model):
+#     code = models.CharField(max_length=256, verbose_name="确认码")
+#     user = models.OneToOneField('SiteUser', on_delete=models.CASCADE)
+#     create_time = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+#
+#     def __str__(self):
+#         return self.user.name + ":" + self.code
+#
+#     class Meta:
+#         ordering = ["-create_time"]
+#         verbose_name = "确认码"
+#         verbose_name_plural = "确认码"
